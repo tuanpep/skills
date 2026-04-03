@@ -18,7 +18,7 @@ description: Kiro-style spec-driven development workflow for AI agents. Full 6-p
 
 3. **Determine spec directory** — `.kiro/specs/[kebab-case-name]/`
 
-4. **Execute the 6-phase workflow** (see below).
+4. **Execute the 6-phase workflow** — Phases 1–3 auto-chain without stopping. Present the full plan (all 3 spec files) for review after Phase 3. After approval, Phases 4–6 auto-chain to completion.
 
 5. **Write files to disk** — Use the Write tool. Don't just show content in chat.
 
@@ -72,23 +72,24 @@ Phase 5: Review & Verify        → validate against spec
 Phase 6: Complete               → final summary & status
 ```
 
-Phases 1–3 produce spec files. Phases 4–6 turn specs into verified, working code.
+Phases 1–3 auto-chain (no stops). Single approval gate after Phase 3. Phases 4–6 auto-chain after approval.
 
-### Phases 1–3: Planning
+### Phases 1–3: Planning (auto-chain)
 
 **Before writing each phase**, read the relevant reference:
 - Phase 1 (requirements): Read `references/ears-notation.md` for EARS patterns
 - Phase 2 (design): Read `references/pbt-guide.md` for property extraction
 - Use the appropriate template from `templates/` for the file being written
 
-**Approval gate** after each phase:
-1. Show file path + brief summary of key decisions
-2. Ask: "Does this look right? Any changes before I move to the next phase?"
-3. Wait for explicit go-ahead
+Write all three spec files in sequence without stopping. After Phase 3, present a **plan summary**:
+1. List all 3 file paths written
+2. Summarize key decisions from each phase (requirements highlights, architecture choices, task count)
+3. Ask: **"Here's the full plan. Ready to proceed with implementation, or want changes?"**
+4. Wait for explicit go-ahead
 
 ### Phase 4: Execute
 
-Ask **"Ready to start implementation?"** — wait for go-ahead.
+Proceed immediately after plan approval — no additional confirmation.
 
 **Sequential mode:**
 ```
@@ -108,9 +109,9 @@ For each task:
 - If a task reveals a spec gap, **pause** and propose a spec update
 - Use TodoWrite to track progress across multiple tasks
 
-### Phase 5: Review & Verify
+### Phase 5: Review & Verify (auto-continues from Phase 4)
 
-After all tasks are `[x]`, run a **single consolidated pass**. Read `references/quality-gates.md` for the checklist. Do NOT skip this phase.
+After all tasks are `[x]`, immediately run a **single consolidated pass**. Read `references/quality-gates.md` for the checklist. Do NOT skip this phase.
 
 **Single-pass review** — For each source file touched during Phase 4:
 1. **Spec compliance**: Map implementation to REQ-N.M. Flag missing/partial coverage.
@@ -130,7 +131,7 @@ After all tasks are `[x]`, run a **single consolidated pass**. Read `references/
 - Fix any failures before Phase 6.
 - Evaluate all quality gates — all must pass.
 
-### Phase 6: Complete
+### Phase 6: Complete (auto-continues from Phase 5)
 
 1. **Update tasks.md** — Add status block at top:
    ```
