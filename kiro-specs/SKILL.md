@@ -64,12 +64,10 @@ Files: `bugfix.md` → `design.md` → `tasks.md`, then execute → review → c
 ## 6-Phase Workflow
 
 ```
-Phase 1: Requirements/Bugfix   → approval gate
-Phase 2: Design                 → approval gate
-Phase 3: Tasks                  → approval gate
-Phase 4: Execute                → implement all tasks
-Phase 5: Review & Verify        → validate against spec
-Phase 6: Complete               → final summary & status
+Phase 1–3: Plan (auto-chain)    → STOP: review full plan
+Phase 4: Execute + verify inline → implement tasks, verify REQ-N.M as you go
+Phase 5: Test + gap check        → run tests, scan for missed requirements
+Phase 6: Complete                 → update status, summary
 ```
 
 Phases 1–3 auto-chain (no stops). Single approval gate after Phase 3. Phases 4–6 auto-chain after approval.
@@ -87,53 +85,42 @@ Write all three spec files in sequence without stopping. After Phase 3, present 
 3. Ask: **"Here's the full plan. Ready to proceed with implementation, or want changes?"**
 4. Wait for explicit go-ahead
 
-### Phase 4: Execute
+### Phase 4: Execute + Verify-as-you-go
 
 Proceed immediately after plan approval — no additional confirmation.
 
-**Sequential mode:**
+**For each task** (in dependency order):
 ```
-For each task:
-  1. Mark [~] in tasks.md
-  2. Read relevant source files
-  3. Implement + write/run tests
-  4. Mark [x] in tasks.md
-  5. Brief status report
+1. Read task's acceptance criteria and linked REQ-N.M from memory (do NOT re-read tasks.md)
+2. Read only the source files needed for this task
+3. Implement the task
+4. Verify inline: confirm implementation satisfies linked REQ-N.M and acceptance criteria
+5. Write/run tests for this task only
+6. Track: note [task #, status, REQ coverage, file:line] in working memory
 ```
 
-**Batch mode:** Run all required tasks in dependency order. Skip optional unless requested.
-
-**Rules:**
-- Read existing files before modifying
-- Follow conventions from codebase exploration
+**Token-saving rules:**
+- Use TodoWrite for progress tracking — do NOT read/write tasks.md per task
+- Only read source files you are about to modify — skip unchanged files
+- Follow conventions from codebase exploration (already in context)
 - If a task reveals a spec gap, **pause** and propose a spec update
-- Use TodoWrite to track progress across multiple tasks
+- Batch all tasks.md status updates into a single write at the end of Phase 4
 
-### Phase 5: Review & Verify (auto-continues from Phase 4)
+**After all tasks complete**, update tasks.md once with all statuses set to `[x]`.
 
-After all tasks are `[x]`, immediately run a **single consolidated pass**. Read `references/quality-gates.md` for the checklist. Do NOT skip this phase.
+### Phase 5: Test + Gap Check (auto-continues from Phase 4)
 
-**Single-pass review** — For each source file touched during Phase 4:
-1. **Spec compliance**: Map implementation to REQ-N.M. Flag missing/partial coverage.
-2. **Design conformance**: Check component boundaries, data model, API design, error handling match `design.md`.
-3. **Acceptance criteria**: Trace each Given/When/Then criterion. Verify a test covers it.
+Phase 5 is lightweight — Phase 4 already verified each REQ-N.M inline. Phase 5 only catches what inline verification might miss.
 
-**Report as a checklist:**
-```
-- [x] REQ-1.1 — src/auth/login.ts:42
-- [x] REQ-1.2 — src/auth/login.ts:67
-- [ ] REQ-2.1 — MISSING ← needs fix
-- [~] REQ-2.2 — PARTIAL: success only ← needs fix
-```
+1. **Run tests once** — Execute the full test suite. Report pass/fail counts (unit, integration, PBT, E2E).
+2. **Gap scan** — Check the REQ coverage notes from Phase 4. Flag any REQ-N.M not yet traced to code. Do NOT re-read spec files unless a gap is found.
+3. **Fix** — If tests fail or gaps exist, fix them. Re-run only affected tests.
 
-**Then:**
-- Run full test suite. Report pass/fail counts (unit, integration, PBT, E2E).
-- Fix any failures before Phase 6.
-- Evaluate all quality gates — all must pass.
+Read `references/quality-gates.md` only if a gap is found and you need the full checklist.
 
 ### Phase 6: Complete (auto-continues from Phase 5)
 
-1. **Update tasks.md** — Add status block at top:
+1. **Update tasks.md** — Single write. Add status block at top:
    ```
    ## Status: COMPLETE
    - Completed: [date]
@@ -142,14 +129,14 @@ After all tasks are `[x]`, immediately run a **single consolidated pass**. Read 
    - Remaining optional tasks: [list or "None"]
    ```
 
-2. **Completion summary** to user:
+2. **Completion summary** to user (from working memory — no re-reads):
    - What was built/fixed (one sentence)
    - Files created/modified
    - Requirements coverage: N/N verified
    - Test results
    - Optional tasks left undone, known limitations, follow-up items
 
-3. **Archival** — Completed spec stays in `.kiro/specs/` as living documentation for future reference, regression context, and compliance audit trail.
+3. **Archival** — Completed spec stays in `.kiro/specs/` as living documentation.
 
 ---
 
@@ -169,18 +156,6 @@ One spec per feature/bug. Kebab-case names. Include date in bugfix names. Versio
 
 ---
 
-## Updating Existing Specs (Refinement Cascade)
+## Updating Existing Specs / Multi-Spec Projects
 
-**Requirements changed** → Regenerate affected `design.md` sections → Regenerate affected `tasks.md` entries → Show diff summary before writing.
-
-**Design changed** → Validate requirements feasibility → Re-derive affected requirements → Regenerate affected `tasks.md` → Show diff summary.
-
-**Check task progress** → Read codebase against acceptance criteria → Mark implemented tasks `[x]`.
-
-Always read current file before writing updates — avoid overwriting user edits.
-
----
-
-## Multi-Spec Projects
-
-Unlimited specs per repo, organized by feature. Each independent — teams work on different specs without conflicts. Reference specs in conversation with `#spec [spec-name]` to load full context.
+Read `references/spec-management.md` when updating an existing spec or managing multiple specs. Not needed for new spec creation.

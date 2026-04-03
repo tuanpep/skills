@@ -1,6 +1,6 @@
 # Quality Gates Checklist
 
-Evaluate each gate during Phase 5: Review & Verify. All must pass before Phase 6.
+Only load this file when Phase 5 finds a gap. Use for systematic gap resolution.
 
 | Gate | Phase | Pass Criteria |
 |------|-------|---------------|
@@ -8,36 +8,28 @@ Evaluate each gate during Phase 5: Review & Verify. All must pass before Phase 6
 | Design complete | 2 | Sequence diagrams cover main + error flows, all components documented |
 | Properties extracted | 2 | Each EARS requirement has a corresponding testable property |
 | Tasks defined | 3 | Each task has specific acceptance criteria and file list |
-| Implementation complete | 4 | All required tasks marked `[x]` |
-| Spec compliance verified | 5 | Every REQ-N.M traced to implementation code |
-| Design conformance verified | 5 | Implementation matches component design, data model, API design |
-| Acceptance criteria passed | 5 | All Given/When/Then criteria verified with tests |
+| Implementation complete | 4 | All required tasks done |
+| Spec compliance verified | 4 | Every REQ-N.M traced to implementation code (verified inline) |
+| Design conformance verified | 4 | Implementation matches component design, data model, API design |
+| Acceptance criteria passed | 4 | All Given/When/Then criteria verified with tests |
 | Tests passing | 5 | Unit, integration, PBT, and E2E tests all green |
 | Completion documented | 6 | Status block added to tasks.md, summary presented to user |
 
-## Review Report Template
+## Gap Resolution Template
+
+When a gap is found in Phase 5, report:
 
 ```
-## Phase 5 Review Report
+## Gap Report
 
-### Spec Compliance
-- [x] REQ-1.1 — Implemented in [file:line]
-- [x] REQ-1.2 — Implemented in [file:line]
-- [ ] REQ-2.1 — MISSING ← needs fix
-- [~] REQ-2.2 — PARTIAL ← needs fix
+### Missing/Partial Requirements
+- [ ] REQ-N.M — [MISSING|PARTIAL]: [description] ← [fix action]
 
-### Design Conformance
-- [x] Component boundaries match design
-- [x] Data model matches schema
-- [x] API endpoints match design table
-- [x] Error handling covers all scenarios
+### Failing Tests
+- [test name]: [failure reason] ← [fix action]
 
-### Test Results
-- Unit: X/Y passed
-- Integration: X/Y passed
-- PBT: X/Y passed (or N/A)
-- E2E: X/Y passed (or N/A)
-
-### Quality Gates
-- [x] All gates passed / [ ] Gates failing: [list]
+### Action Plan
+1. [fix step]
+2. Re-run affected tests
+3. Confirm gap resolved
 ```
