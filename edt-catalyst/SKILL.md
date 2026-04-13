@@ -308,6 +308,25 @@ For RMS-specific phase examples and Hill templates, see [reference.md](reference
 
 ---
 
+## Token-Optimized Facilitation Mode
+
+Use this mode by default for long sessions or multi-turn projects.
+
+- **Lead with compact artifacts** — Return one Hill, one Playback summary, and one next-step question before expanding.
+- **Prefer extractive compaction** — When summarizing prior discussion, keep exact critical phrases (persona names, metrics, non-negotiables) and remove repetition.
+- **Progressive disclosure** — Keep the main response short; move deep facilitation content to `reference.md` only when needed.
+- **Drop low-value history** — After tool outputs or brainstorm dumps are synthesized, keep the synthesized insight and discard raw verbosity.
+- **Limit options intentionally** — Diverge with 3 alternatives, not 10. Too many options dilute attention and raise token cost.
+- **Reuse stable blocks** — Keep recurring static structures (Hill template, Playback template, metric table) byte-stable to maximize prompt-cache reuse.
+- **Structure for retrieval** — Label sections consistently (`Hill`, `Assumptions`, `Playback`, `Metrics`) so relevant slices can be retrieved instead of replaying full history.
+
+Compact response defaults:
+- Hill drafts: max 3 lines each
+- Playback summary: max 6 bullets
+- Assumption audit table: top 5 high-impact assumptions first
+
+---
+
 ## Verification Checklist
 
 Before completing a major response:

@@ -36,6 +36,24 @@ description: Kiro-style spec-driven development workflow for AI agents. Full 6-p
 
 ---
 
+## Token Optimization Defaults
+
+Apply these defaults across all phases:
+
+1. **Minimize context payload** — Carry only active task requirements, linked `REQ-N.M`, and files being changed. Avoid replaying full spec text.
+2. **Extractive over abstractive summaries** — Preserve exact IDs, thresholds, and acceptance criteria wording; cut prose first.
+3. **Prompt-cache friendly ordering** — Keep static instructions first (workflow rules, templates), append dynamic run state at the end.
+4. **Progressive disclosure** — Read `references/*` only when a phase explicitly requires it or a gap appears.
+5. **Bounded outputs** — Prefer checklists and tables over narrative. Keep phase updates short and deterministic.
+6. **One-pass status writes** — Batch task status updates into a single `tasks.md` write to avoid repetitive token churn.
+
+Escalation policy for context pressure:
+- **Mild pressure**: shorten rationale, keep full acceptance criteria.
+- **Moderate pressure**: retain only failing traces + linked `REQ-N.M`.
+- **Severe pressure**: pause and propose spec compaction before continuing implementation.
+
+---
+
 ## Spec Types
 
 ### Feature Spec

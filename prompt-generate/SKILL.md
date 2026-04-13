@@ -57,6 +57,21 @@ Apply **unless the user’s example explicitly contradicts it**.
 
 **Context window awareness** — Keep instruction prompts under ~2000 tokens / ~500 lines. If longer, extract stable context (repo layout, conventions) into a referenced file rather than inlining. For Claude, use XML tags (`<constraints>`, `<context>`, `<deliverables>`) for structural sections—Claude parses these more reliably than markdown headers in system prompts.
 
+## Token optimization playbook (apply by default)
+
+1. **Target budget first** — Ask or assume a token budget (`tight`, `standard`, `high-fidelity`) before writing.
+2. **Static prefix, dynamic suffix** — Put reusable instructions first; place request-specific data and volatile details at the end for cache-friendly prompts.
+3. **Schema trimming** — For tool prompts, include only tools needed for this mission; remove overlapping descriptions and optional params unless required.
+4. **Extractive compaction** — Keep verbatim constraints, command names, paths, and success criteria; compress explanations around them.
+5. **No duplicate rules** — State each rule once in the highest-priority section (usually Critical constraints).
+6. **Bounded few-shot** — Include at most 1 short example unless the task is fragile; prefer templates over long demonstrations.
+7. **Compression pass before output** — Remove filler adjectives, repeated caveats, and generic best-practice text not tied to the mission.
+
+Quick budget profile:
+- **tight**: <= 700 tokens, no examples, checklist-only output format
+- **standard**: <= 1500 tokens, 1 concise example max
+- **high-fidelity**: <= 2500 tokens, expanded gotchas and recovery logic
+
 **Context stack (for long missions)** — For autonomous agents, instructions are only one layer. When generating prompts for **multi-step repo work**, remind the agent to rely on: repository facts (files, configs), **tool** definitions if any, and **fresh** verification (run tests), not only memory from the prompt.
 
 **Length** — Prefer **dense, scannable** sections over prose. Put **must-follow** rules and paths **early**. Avoid repeating the same rule in multiple sections.
