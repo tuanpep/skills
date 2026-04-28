@@ -1,116 +1,80 @@
 ---
 name: prompt-generate
 description: >-
-  Generates structured agent mission prompts and optional SKILL.md drafts from
-  user goal plus example. Use for prompt reverse-engineering, reusable skill
-  extraction, and agent prompt quality hardening.
+  Generate structured agent mission prompts and optional SKILL.md drafts from
+  user goal + example. Use for reverse-engineering prompt structure and
+  producing concise, verifiable agent instructions.
 ---
 
-# Prompt generate
+# Prompt Generate — Compressed
 
 Use when user gives:
+1. target goal (task/repo/constraints)
+2. example prompt/spec/message to emulate
 
-1. target goal (repo/task/constraints), and
-2. example prompt/spec/message to mimic.
-
-Output either execution prompt, SKILL draft, or both.
+Output: execution prompt, SKILL draft, or both.
 
 ## Core stance
-
-- Keep prompt concise. Every token competes with tool output/history.
-- Prefer real project knowledge over generic advice.
+- Concise by default; tokens are budget.
+- Prefer real project knowledge over generic tips.
 - Teach repeatable procedure, not one-off output.
 
-## Must-include principles
-
-Apply unless example explicitly conflicts.
-
-1. **Role**: one clear line (domain + success criteria).
-2. **End-state**: define done as measurable outcomes.
-3. **Context**: include only missing repo/task facts.
-4. **Direct ask**: avoid vague verbs without criteria.
-5. **Control level by fragility**:
-   - High freedom: guidance
-   - Medium freedom: template
-   - Low freedom: exact steps/commands
-6. **Constraints**: prefer positive directives + explicit non-goals.
-7. **Priorities**: rank trade-offs.
-8. **Output format**: exact expected structure.
-9. **Gotchas**: include environment-specific traps.
-10. **Pattern anchor**: use user example as behavioral template.
-11. **Reasoning loop**: plan before action, reflect after result.
-12. **Tool policy**: when to use / when not to use each tool.
-13. **Verification loop**: always run tests/checks before done.
-14. **Failure handling**:
-    - wrong approach (2 failed attempts) -> switch strategy
-    - blocked -> document + ask one question
-    - long-running -> write `progress.md`
+## Must include (unless example conflicts)
+1. Role line (domain + success target)
+2. Done state (measurable outcomes)
+3. Minimal required context
+4. Direct ask (no vague "improve")
+5. Control level by fragility (guidance/template/exact steps)
+6. Constraints + non-goals
+7. Priority order
+8. Explicit output format
+9. Environment gotchas
+10. Pattern anchor from example
+11. Plan-before-action, reflect-after-result loop
+12. Tool policy (when to use/avoid)
+13. Verification loop (tests/checks required)
+14. Failure handling (switch strategy / blocked / long-running)
 
 ## Critical constraints block
-
-If prompt has >5 constraints, place top 3 non-negotiables at very top, once.
-
+If >5 constraints, put top 3 non-negotiables at top:
 ```markdown
 > **Critical constraints** (read first)
->
 > - [Rule 1]
 > - [Rule 2]
 > - [Rule 3]
 ```
 
 ## Token optimization defaults
-
-1. Pick budget first (`tight`, `standard`, `high-fidelity`).
-2. Put static instructions first; dynamic request details last.
-3. Include only needed tools/schema fields.
-4. Keep exact commands/paths/thresholds; compress explanations.
-5. Do not repeat same rule in multiple sections.
-6. Limit examples (0-1 unless task is fragile).
+1. Pick budget first: `tight` / `standard` / `high-fidelity`.
+2. Static instructions first; request-specific details last.
+3. Include only needed tools/params.
+4. Keep commands/paths/thresholds exact; compress explanation.
+5. State each rule once.
+6. Use at most 1 short example unless fragile task.
 7. Run final compression pass.
 
 Budget guide:
-
-- `tight`: <= 700 tokens
-- `standard`: <= 1500 tokens
-- `high-fidelity`: <= 2500 tokens
+- `tight`: <=700 tokens
+- `standard`: <=1500 tokens
+- `high-fidelity`: <=2500 tokens
 
 ## Output selection
-
-| User asks for       | Deliver                                      |
-| ------------------- | -------------------------------------------- |
-| one-shot agent task | execution prompt (markdown)                  |
-| reusable capability | `SKILL.md` draft (+ optional `examples.md`)  |
-| both                | execution prompt first, then condensed skill |
+- one-shot task -> execution prompt
+- reusable capability -> `SKILL.md` (+ optional `examples.md`)
+- both -> execution prompt first, condensed skill second
 
 ## Workflow
+1. Parse example structure (role/mission/goals/context/constraints/phases/output/start).
+2. Split fixed scaffold vs variable slots.
+3. Fill missing inputs from workspace; if blocked ask one short question or mark `TBD`.
+4. Generate prompt with same section order + specificity level.
+5. Sanity-check commands/scope/placeholders/verification.
+6. For high-stakes missions, run checklist in `examples.md`.
 
-1. Parse example structure:
-   - title/role
-   - mission line
-   - goals
-   - context
-   - deliverables
-   - constraints
-   - phases
-   - output format
-   - kickoff wording
-2. Separate fixed scaffold vs variable slots.
-3. Fill missing inputs from workspace; if still missing, ask one short question or mark `TBD`.
-4. Generate new prompt preserving section order + specificity level.
-5. Sanity-check:
-   - commands match stack
-   - scope matches ask
-   - no placeholder text
-   - constraints/priorities/verification present
-6. For high-stakes missions, run checklist in [examples.md](examples.md#prompt-quality-checklist).
-
-## Execution prompt default template
-
-Use only when user example does not prescribe structure:
-
+## Default execution prompt template
+Use only if example gives no structure:
 ```markdown
 > **Critical constraints** (read first)
->
 > - [Top rule #1]
 > - [Top rule #2]
 > - [Top rule #3]
@@ -118,73 +82,59 @@ Use only when user example does not prescribe structure:
 You are a [ROLE]. Mission: [ONE LINE].
 
 ## Project context
-
 - Repo: [path], stack: [versions]
 - Conventions: [file/link]
 - Audience: [reviewers/consumers]
 
 ## Done looks like
-
 1. [Measurable outcome]
 2. [Measurable outcome]
 
 ## Gotchas
-
-- [Non-obvious environment fact]
-- [Non-obvious project rule]
+- [Non-obvious fact]
+- [Project trap]
 
 ## Constraints
-
 - [Positive directive]
 - [Non-goal]
 - Default tool: [X], fallback: [condition]
 - Priority: [#1] > [#2] > [#3]
 
 ## Execution plan
-
-1. [Phase] — state expected finding before action.
-2. [Phase] — reassess after each result.
-3. Verify — run `[test command]`; all pass before done.
+1. [Phase] expect finding before action.
+2. [Phase] reassess after each result.
+3. Verify with `[test command]` before done.
 
 ## Progress checklist
-
 - [ ] Step 1
 - [ ] Step 2
 - [ ] Step 3 (verify)
 
 ## Output format
-
 - [per-phase updates]
 - [final report shape]
 
 ## Failure handling
-
-- Wrong approach: 2 failed fixes -> switch strategy
-- Blocked: document blocker + ask one question
-- Long-running: write `progress.md`
+- 2 failed fixes same issue -> switch strategy
+- blocked -> document blocker + ask one question
+- long-running -> write `progress.md`
 
 ## Start now by
-
 1. ...
 2. ...
 3. ...
 ```
 
-## SKILL.md draft rules
-
-Follow [Agent Skills spec](https://agentskills.io/specification):
-
-- Required frontmatter:
-  - `name` (lowercase-hyphen, dir-matching)
-  - `description` (third person; what + when + triggers)
-- Keep SKILL body under ~500 lines; move long examples to `examples.md`/`references/`.
-- Use progressive disclosure; one-level file references.
-- Do not dump large one-off prompts into SKILL body.
+## SKILL draft rules
+- Follow [Agent Skills spec](https://agentskills.io/specification)
+- Frontmatter: `name`, `description` (third-person; what+when+triggers)
+- Keep SKILL body <= ~500 lines
+- Move long examples/docs to `examples.md` or `references/`
+- Avoid dumping one-off mega prompt into SKILL
 
 ## Resources
-
-- Internal checklist/examples: [examples.md](examples.md)
-- External references:
+- Internal: `examples.md`
+- External:
   - [Agent Skills Specification](https://agentskills.io/specification)
   - [Agent Skills Best Practices](https://agentskills.io/skill-creation/best-practices)
   - [Anthropic: Effective Context Engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
