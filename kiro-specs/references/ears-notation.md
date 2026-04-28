@@ -2,14 +2,14 @@
 
 Use EARS patterns for every requirement. Choose the pattern that fits:
 
-| Pattern | Syntax | Use for |
-|---------|--------|---------|
-| Event-driven | `WHEN [event] THE SYSTEM SHALL [behavior]` | Triggered actions |
-| State-driven | `WHILE [state] THE SYSTEM SHALL [behavior]` | Continuous behaviors |
-| Conditional | `IF [condition] THEN THE SYSTEM SHALL [behavior]` | Unwanted/error cases |
-| Ubiquitous | `THE SYSTEM SHALL [behavior]` | Always-true invariants |
-| Optional | `WHERE [feature is enabled] THE SYSTEM SHALL [behavior]` | Feature flags |
-| Compound | `WHILE [state] WHEN [event] THE SYSTEM SHALL [behavior]` | State + trigger |
+| Pattern      | Syntax                                                   | Use for                |
+| ------------ | -------------------------------------------------------- | ---------------------- |
+| Event-driven | `WHEN [event] THE SYSTEM SHALL [behavior]`               | Triggered actions      |
+| State-driven | `WHILE [state] THE SYSTEM SHALL [behavior]`              | Continuous behaviors   |
+| Conditional  | `IF [condition] THEN THE SYSTEM SHALL [behavior]`        | Unwanted/error cases   |
+| Ubiquitous   | `THE SYSTEM SHALL [behavior]`                            | Always-true invariants |
+| Optional     | `WHERE [feature is enabled] THE SYSTEM SHALL [behavior]` | Feature flags          |
+| Compound     | `WHILE [state] WHEN [event] THE SYSTEM SHALL [behavior]` | State + trigger        |
 
 ## Examples
 

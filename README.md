@@ -2,18 +2,38 @@
 
 Use this repo with the Skills ecosystem at [skills.sh](https://skills.sh/).
 
-## Install a skill
-
-Run:
+## Install all skills from this repo
 
 ```bash
-npx skills add <owner/repo>
+npx skills add tuanpep/skills
 ```
 
-Example:
+## Install one skill (copy-ready)
+
+Repo slug: `tuanpep/skills`.
+
+### caveman
 
 ```bash
-npx skills add vercel-labs/skills
+npx skills add tuanpep/skills/caveman
+```
+
+### edt-catalyst
+
+```bash
+npx skills add tuanpep/skills/edt-catalyst
+```
+
+### kiro-specs
+
+```bash
+npx skills add tuanpep/skills/kiro-specs
+```
+
+### prompt-generate
+
+```bash
+npx skills add tuanpep/skills/prompt-generate
 ```
 
 ## Find skill names
@@ -21,7 +41,8 @@ npx skills add vercel-labs/skills
 1. Open [skills.sh](https://skills.sh/)
 2. Search for the skill you want
 3. Copy the `owner/repo` value
-4. Install with `npx skills add <owner/repo>`
+4. Install full repo: `npx skills add tuanpep/skills`
+5. Or install single skill path: `npx skills add tuanpep/skills/<skill-name>`
 
 ## Verify installation
 
@@ -42,3 +63,4 @@ npx skills update
 - Use Node.js 18+ for best compatibility with modern CLI tools.
 - If `npx` prompts for confirmation, select `y`.
 - If install fails, retry with a different network/VPN and run the command again.
+- Skills in this repo: `caveman`, `edt-catalyst`, `kiro-specs`, `prompt-generate`.

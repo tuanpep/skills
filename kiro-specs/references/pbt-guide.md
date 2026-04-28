@@ -13,10 +13,10 @@ PBT tests hundreds of input combinations automatically, using "shrinking" to fin
 
 During the Design phase, extract one property per EARS requirement:
 
-| EARS Requirement | Property |
-|-----------------|----------|
-| `WHEN [event] THE SYSTEM SHALL [behavior]` | For any valid [event input], the system produces [behavior output] |
-| `WHILE [state] THE SYSTEM SHALL [behavior]` | For any moment during [state], [behavior] holds |
+| EARS Requirement                                  | Property                                                           |
+| ------------------------------------------------- | ------------------------------------------------------------------ |
+| `WHEN [event] THE SYSTEM SHALL [behavior]`        | For any valid [event input], the system produces [behavior output] |
+| `WHILE [state] THE SYSTEM SHALL [behavior]`       | For any moment during [state], [behavior] holds                    |
 | `IF [condition] THEN THE SYSTEM SHALL [behavior]` | For any input matching [condition], the system produces [behavior] |
 
 Record in design.md as:
@@ -31,6 +31,7 @@ Record in design.md as:
 ## PBT in Tasks
 
 Include as optional task in tasks.md:
+
 - Link each property to its source REQ-N.M
 - Target 100+ generated input iterations
 - Verify shrinking produces minimal counter-examples on failure
@@ -39,8 +40,8 @@ Include as optional task in tasks.md:
 
 Three property categories:
 
-| Category | When it must hold | Purpose |
-|----------|------------------|---------|
-| **Bug exists** | FAILS before fix | Confirms bug is reproducible |
-| **Fix works** | PASSES after fix | Confirms fix resolves the issue |
-| **No regressions** | PASSES before AND after | Confirms no side effects |
+| Category           | When it must hold       | Purpose                         |
+| ------------------ | ----------------------- | ------------------------------- |
+| **Bug exists**     | FAILS before fix        | Confirms bug is reproducible    |
+| **Fix works**      | PASSES after fix        | Confirms fix resolves the issue |
+| **No regressions** | PASSES before AND after | Confirms no side effects        |

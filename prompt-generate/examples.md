@@ -18,8 +18,9 @@ Run the tests when done.
 
 ### After (structured)
 
-````markdown
+```markdown
 > **Critical constraints** (read first)
+>
 > - Do NOT modify production code unless a failing test proves a bug
 > - All new tests extend `AbstractServiceTest` and use `TestDataBuilder`
 > - All tests must pass: `./gradlew :rms-service:test --tests "*AllocationServiceTest"`
@@ -35,12 +36,14 @@ You are a senior Java test engineer. Your mission is to bring AllocationService 
 </context>
 
 ## Done looks like
-1) Every public method in `AllocationService` has >=1 happy-path + >=1 error-path test
-2) State machine transitions fully covered: valid transitions succeed, invalid throw `BusinessRuleException`
-3) `./gradlew :rms-service:test --tests "*AllocationServiceTest"` passes with 0 failures
-4) No flaky tests — no `Thread.sleep`, no shared mutable state
+
+1. Every public method in `AllocationService` has >=1 happy-path + >=1 error-path test
+2. State machine transitions fully covered: valid transitions succeed, invalid throw `BusinessRuleException`
+3. `./gradlew :rms-service:test --tests "*AllocationServiceTest"` passes with 0 failures
+4. No flaky tests — no `Thread.sleep`, no shared mutable state
 
 ## Gotchas
+
 - `CurrentUserIdAspect` sets ThreadLocal from SecurityContext — `AbstractServiceTest` handles this, but raw `@ExtendWith(MockitoExtension.class)` won't
 - DB triggers maintain `member_total_allocated` — do NOT assert on this field in unit tests (only in integration tests)
 - `@Transactional(readOnly = true)` is on the service class — mutating methods need their own `@Transactional`
@@ -53,25 +56,29 @@ You are a senior Java test engineer. Your mission is to bring AllocationService 
 </constraints>
 
 ## Execution plan
-1) **Audit** — Read `AllocationService.java` and existing `AllocationServiceTest.java`. List every public method and note which are untested or under-tested.
-2) **Design** — For each gap, write a one-line test name (`method_scenario`). Group by: state transitions, validation, CRUD.
-3) **Implement** — Write tests in priority order. Before each batch, state which methods you're targeting and why.
-4) **Verify** — Run `./gradlew :rms-service:test --tests "*AllocationServiceTest"`. If failures, diagnose and fix. After 2 failed fixes on the same test, reassess your approach.
-5) **Report** — List: tests added, methods now covered, any gaps you chose to skip and why.
+
+1. **Audit** — Read `AllocationService.java` and existing `AllocationServiceTest.java`. List every public method and note which are untested or under-tested.
+2. **Design** — For each gap, write a one-line test name (`method_scenario`). Group by: state transitions, validation, CRUD.
+3. **Implement** — Write tests in priority order. Before each batch, state which methods you're targeting and why.
+4. **Verify** — Run `./gradlew :rms-service:test --tests "*AllocationServiceTest"`. If failures, diagnose and fix. After 2 failed fixes on the same test, reassess your approach.
+5. **Report** — List: tests added, methods now covered, any gaps you chose to skip and why.
 
 ## Output format
+
 - Per phase: brief progress line + files changed
 - Final: markdown table of `method | test name | status (pass/skip+reason)`
 
 ## On failure
+
 - **Wrong approach** (2 failed fixes): switch strategy, don't patch incrementally.
 - **Blocked** (can't determine expected behavior): document the ambiguity, skip the test, flag it.
 
 ## Start now by:
-1) Read `AllocationService.java` — list all public methods
-2) Read existing test file — identify coverage gaps
-3) Write tests for the 3 highest-priority state transitions first
-````
+
+1. Read `AllocationService.java` — list all public methods
+2. Read existing test file — identify coverage gaps
+3. Write tests for the 3 highest-priority state transitions first
+```
 
 **Why this works**: Measurable end state, project-specific gotchas the agent can't infer, positive constraints with clear defaults, verification loop with escalation, priority order for time-boxing.
 
@@ -106,6 +113,7 @@ description: >-
 
 ```markdown
 ## Code review process
+
 1. Check all database queries for SQL injection (use parameterized queries)
 2. Verify authentication checks on every endpoint
 3. Look for race conditions in concurrent code paths
@@ -116,15 +124,22 @@ description: >-
 
 ````markdown
 ## Report structure
+
 Use this template, adapting sections as needed:
 
 ```markdown
 # [Analysis Title]
+
 ## Executive summary
+
 [One-paragraph overview]
+
 ## Key findings
+
 - Finding 1 with supporting data
+
 ## Recommendations
+
 1. Specific actionable recommendation
 ```
 ````
@@ -133,10 +148,13 @@ Use this template, adapting sections as needed:
 
 ````markdown
 ## Database migration
+
 Run exactly this sequence:
+
 ```bash
 python scripts/migrate.py --verify --backup
 ```
+
 Do not modify the command or add additional flags.
 ````
 
@@ -163,35 +181,35 @@ Repeat actual `./gradlew` or `yarn` lines from the repo docs; do not invent task
 
 ## What to vary per new task
 
-| Slot | Source |
-|------|--------|
-| Role | User brief |
-| Repo paths | User or workspace |
-| Stack versions | User or `build.gradle` / `package.json` |
-| Done looks like | User goals, converted to measurable outcomes |
-| Gotchas | User corrections, project CLAUDE.md, code review history |
-| Critical constraints | Project CLAUDE.md + user brief |
-| Control level | Fragility of each section's task (see examples above) |
-| "Start now" | Highest-risk or user-priority work |
+| Slot                 | Source                                                   |
+| -------------------- | -------------------------------------------------------- |
+| Role                 | User brief                                               |
+| Repo paths           | User or workspace                                        |
+| Stack versions       | User or `build.gradle` / `package.json`                  |
+| Done looks like      | User goals, converted to measurable outcomes             |
+| Gotchas              | User corrections, project CLAUDE.md, code review history |
+| Critical constraints | Project CLAUDE.md + user brief                           |
+| Control level        | Fragility of each section's task (see examples above)    |
+| "Start now"          | Highest-risk or user-priority work                       |
 
 ## Anti-patterns
 
-| Anti-Pattern | Why It Fails | Fix |
-|---|---|---|
-| Vague deliverables ("improve tests") | No measurable "done"; agent guesses scope | State outcomes: ">=90% branch coverage, 0 failures" |
-| Over-explaining what the agent knows | Wastes context tokens on common knowledge | Only add what the agent would get wrong without being told |
-| Step-by-step without end state | Breaks on unexpected situations | Lead with "done looks like", add steps only for ordering |
-| Presenting multiple tools as equal options | Agent wastes time deciding or tries several | Pick a default, mention alternatives only for specific conditions |
-| Missing gotchas section | Agent makes avoidable mistakes from false assumptions | Add concrete facts that defy reasonable assumptions |
-| Missing "do not change production" | Agent may refactor prod code to make tests easier | Add as critical constraint |
-| Commands that don't exist in the repo | Agent wastes time on errors | Copy exact commands from CLAUDE.md or package.json |
-| 500+ token constraint lists | Important rules get buried | Top 3 in critical constraints box; rest in `<constraints>` |
-| No verification step | Agent reports "done" with failing tests | Always include: run tests -> diagnose -> 2-failure escalation |
-| No reasoning prompts between actions | Blind tool-call chains, compounding errors | "Before each action, state what you expect and why" |
-| Repeating same rule in 3 places | Wastes tokens, creates contradictions on edit | State once in the right section; critical rules in top box only |
-| Generic "think step by step" | Too vague to change behavior | Specific: "Before each tool call, state what you expect to learn" |
-| Deeply nested file references | Agent partially reads files, misses info | Keep references one level deep from SKILL.md |
-| Time-sensitive information | Becomes wrong as time passes | Use "current method" / "old patterns" sections instead of dates |
+| Anti-Pattern                               | Why It Fails                                          | Fix                                                               |
+| ------------------------------------------ | ----------------------------------------------------- | ----------------------------------------------------------------- |
+| Vague deliverables ("improve tests")       | No measurable "done"; agent guesses scope             | State outcomes: ">=90% branch coverage, 0 failures"               |
+| Over-explaining what the agent knows       | Wastes context tokens on common knowledge             | Only add what the agent would get wrong without being told        |
+| Step-by-step without end state             | Breaks on unexpected situations                       | Lead with "done looks like", add steps only for ordering          |
+| Presenting multiple tools as equal options | Agent wastes time deciding or tries several           | Pick a default, mention alternatives only for specific conditions |
+| Missing gotchas section                    | Agent makes avoidable mistakes from false assumptions | Add concrete facts that defy reasonable assumptions               |
+| Missing "do not change production"         | Agent may refactor prod code to make tests easier     | Add as critical constraint                                        |
+| Commands that don't exist in the repo      | Agent wastes time on errors                           | Copy exact commands from CLAUDE.md or package.json                |
+| 500+ token constraint lists                | Important rules get buried                            | Top 3 in critical constraints box; rest in `<constraints>`        |
+| No verification step                       | Agent reports "done" with failing tests               | Always include: run tests -> diagnose -> 2-failure escalation     |
+| No reasoning prompts between actions       | Blind tool-call chains, compounding errors            | "Before each action, state what you expect and why"               |
+| Repeating same rule in 3 places            | Wastes tokens, creates contradictions on edit         | State once in the right section; critical rules in top box only   |
+| Generic "think step by step"               | Too vague to change behavior                          | Specific: "Before each tool call, state what you expect to learn" |
+| Deeply nested file references              | Agent partially reads files, misses info              | Keep references one level deep from SKILL.md                      |
+| Time-sensitive information                 | Becomes wrong as time passes                          | Use "current method" / "old patterns" sections instead of dates   |
 
 ---
 
@@ -200,6 +218,7 @@ Repeat actual `./gradlew` or `yarn` lines from the repo docs; do not invent task
 Use before finalizing a **high-stakes or long-running** agent prompt.
 
 ### Content quality
+
 - [ ] **Conciseness** — Every section justifies its token cost. No explanations of things the agent already knows.
 - [ ] **Real expertise** — Instructions drawn from actual project artifacts/experience, not generic advice.
 - [ ] **Critical constraints** — Top 3 rules in a quoted block at the very top of the prompt.
@@ -210,6 +229,7 @@ Use before finalizing a **high-stakes or long-running** agent prompt.
 - [ ] **Priorities** — If time runs out, what ships first is explicit.
 
 ### Control & structure
+
 - [ ] **Calibrated control** — High freedom for flexible tasks, low freedom for fragile operations. Each section calibrated independently.
 - [ ] **Constraints** — Positive rules preferred; non-goals stated; defaults over menus; no more than ~10 (or extract to a file).
 - [ ] **Reasoning prompts** — Agent instructed to plan before each action and reflect after each result.
@@ -220,12 +240,14 @@ Use before finalizing a **high-stakes or long-running** agent prompt.
 - [ ] **Failure tiers** — Wrong approach (switch strategy), blocked (ask one question), long-running (checkpoint).
 
 ### Token budget & scannability
+
 - [ ] **Token budget** — Instructions under ~2000 tokens / 500 lines. Stable context extracted to referenced files.
 - [ ] **Progressive disclosure** — Large prompts reference detail files conditionally, not inline everything.
 - [ ] **Scannability** — No filler paragraphs; critical rules not buried mid-prompt; no rule repeated in multiple sections.
 - [ ] **Consistent terminology** — One term per concept throughout (not mixing "endpoint" / "URL" / "route").
 
 ### If generating a SKILL.md
+
 - [ ] **Name** — Lowercase-hyphen, 1-64 chars, matches directory name.
 - [ ] **Description** — Third person, WHAT + WHEN, trigger keywords, under 1024 chars.
 - [ ] **Body** — Under 500 lines. Only what the agent wouldn't know.
