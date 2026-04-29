@@ -1,104 +1,100 @@
 ---
 name: kiro-specs
 description: >-
-  Kiro-style spec-driven development for complex features and risky bugfixes.
-  Use explicit requirements, design, tasks, traceable execution, verification.
+  Spec workflow for complex/risky work. Minimal words. Full traceability.
 ---
 
-# Kiro Specs — Compressed
+# Kiro Specs (caveman)
 
-## On invocation
-1. Clarify target: feature or bugfix.
-2. Pick mode:
-   - Feature: Requirements-First or Design-First.
-   - Design-First: High Level or Low Level.
-   - Bugfix: collect repro/current/expected/unchanged constraints.
-3. Explore relevant code (skip greenfield).
-4. Set spec path: `.kiro/specs/[kebab-case-name]/`.
-5. Run 6 phases; write files to disk.
+## Base mode
+- Design rules: `caveman-architecture`
+- Code rules: `caveman-code`
+- Talk style: normal unless user asks caveman
 
-## Use specs vs quick coding
-Use specs for complex/risky/multi-task/compliance work.
-Use quick coding for small obvious low-risk isolated fixes.
+## Use gate (30s)
+Use specs if any:
+- multi-module/interface
+- contract/behavior unclear or changing
+- risky bug/regression/security/compliance
+- need `REQ-N.M` trace
 
-## Token defaults
-1. Keep only active `REQ-N.M`, active task, changed files.
-2. Keep IDs/thresholds exact; compress prose first.
-3. Static rules first, dynamic state last.
-4. Read references only when needed.
-5. Batch `tasks.md` status update once.
+Else quick coding.
 
-## Spec types
+## Start
+1. classify: feature | bugfix
+2. folder: `.kiro/specs/[kebab-name]/`
+3. read only relevant code
+4. run flow
 
-### Feature
-Files: `requirements.md` -> `design.md` -> `tasks.md`.
+## File set
+- Feature: `requirements.md` -> `design.md` -> `tasks.md`
+- Bugfix: `bugfix.md` -> `design.md` -> `tasks.md`
 
-- Requirements-First: behavior known, architecture flexible.
-- Design-First: architecture constrained/known; high-level or low-level first.
+## Flow
+1. Plan
+2. Review gate
+3. Execute
+4. Verify
+5. Complete
 
-### Bugfix
-Files: `bugfix.md` -> `design.md` -> `tasks.md`.
-- `bugfix.md`: repro/current/expected/unchanged
-- `design.md`: root cause/fix/properties/risk
-- `tasks.md`: steps + regression prevention tests
+### 1) Plan
+- use `templates/*`
+- use refs only when needed:
+  - `references/ears-notation.md`
+  - `references/pbt-guide.md`
+- output:
+  - req/bugfix with numbered testable reqs
+  - design: simplest now + "not now"
+  - tasks: order + `REQ-N.M` mapping + verify step
 
-## 6-phase flow
-```text
-1-3 Plan (auto-chain) -> STOP for approval
-4 Execute + inline verify
-5 Test + gap check
-6 Complete + summary
-```
+### 2) Review gate
+Show:
+1. file paths
+2. key decisions
+3. top risks + mitigations
+4. ask approval
 
-### Phases 1-3 (auto-chain)
-Before writing:
-- requirements phase -> `references/ears-notation.md`
-- design phase -> `references/pbt-guide.md`
-- use matching template in `templates/`
+No execute before explicit approval.
 
-After phase 3, present:
-1. paths of 3 created files
-2. key requirement/design/task decisions
-3. ask approval to implement
+### 3) Execute
+Per task:
+1. smallest clear impl, follow project pattern
+2. verify mapped `REQ-N.M`
+3. run targeted tests
+4. update task + coverage note
 
-### Phase 4 execute
-For each task:
-1. Use acceptance criteria + linked `REQ-N.M` from memory.
-2. Read only needed source files.
-3. Implement.
-4. Verify linked `REQ-N.M` inline.
-5. Add/run task tests.
-6. Track `[task#, status, REQ coverage, file:line]`.
+Fail loop:
+- impl bug -> minimal fix -> rerun affected tests
+- spec gap -> update spec first -> continue
 
-Rules: no per-task reread of `tasks.md`; pause if spec gap; batch final task status write.
+### 4) Verify
+- run required tests (targeted first; full suite for high risk/release critical)
+- no untraced required `REQ-N.M`
+- no unresolved critical risk
+- open `references/quality-gates.md` only when gap found
 
-### Phase 5 test + gap
-1. Run full test suite once; report unit/integration/PBT/E2E pass/fail.
-2. Scan REQ coverage notes; flag untraced `REQ-N.M`.
-3. Fix failures/gaps; rerun affected tests.
-4. Read `references/quality-gates.md` only if gap found.
-
-### Phase 6 complete
+### 5) Complete
 Update `tasks.md` once:
 ```text
 ## Status: COMPLETE
 - Completed: [date]
-- Spec compliance: All REQ-N.M verified
-- Tests: All passing
+- Spec compliance: All required REQ-N.M verified
+- Tests: [targeted/full] passing
 - Remaining optional tasks: [list or "None"]
 ```
 
-Send summary:
-- built/fixed in one sentence
+Final summary:
+- one-line outcome
 - files changed
-- requirements coverage N/N
-- test results
-- remaining optional work / limits / follow-ups
+- coverage N/N
+- test result
+- optional follow-ups
 
 Keep completed spec in `.kiro/specs/`.
 
-## Spec organization
-One spec per feature/bug. Kebab-case names. Date in bugfix names.
-
-## Existing/multi-spec work
-Read `references/spec-management.md` only for existing-spec updates or multi-spec coordination.
+## Guardrails
+- no complexity without trigger metric
+- no abstraction with one consumer
+- no optimization without measurement
+- no new dep/config unless needed now
+- one action -> verify
