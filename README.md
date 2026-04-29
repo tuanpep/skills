@@ -4,26 +4,41 @@ Repo for [skills.sh](https://skills.sh/).
 
 ## Install
 
-All skills:
-
-```bash
-npx skills add tuanpep/skills
-```
-
-One skill:
+Install one skill:
 
 ```bash
 npx skills add tuanpep/skills/<skill-name>
 ```
 
-Copy-ready:
+## Install by Skill (copy/paste)
 
+### caveman
 ```bash
 npx skills add tuanpep/skills/caveman
+```
+
+### caveman-code
+```bash
 npx skills add tuanpep/skills/caveman-code
+```
+
+### caveman-architecture
+```bash
 npx skills add tuanpep/skills/caveman-architecture
+```
+
+### edt-catalyst
+```bash
 npx skills add tuanpep/skills/edt-catalyst
+```
+
+### kiro-specs
+```bash
 npx skills add tuanpep/skills/kiro-specs
+```
+
+### prompt-generate
+```bash
 npx skills add tuanpep/skills/prompt-generate
 ```
 
@@ -39,7 +54,7 @@ npx skills update
 1. Open [skills.sh](https://skills.sh/).
 2. Search skill.
 3. Copy `owner/repo`.
-4. Use full repo or single-skill path.
+4. Use single-skill path: `owner/repo/<skill-name>`.
 
 ## Notes
 

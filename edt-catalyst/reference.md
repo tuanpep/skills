@@ -1,81 +1,78 @@
-# EDT Catalyst — Ultra Reference
+# EDT Catalyst reference (caveman)
 
-Use when `SKILL.md` not enough detail.
+Use when `SKILL.md` not enough.
 
-## 1) Hill-Making Fast Flow
-
+## 1) Hill fast flow
 ### Observe
-1. Extract who/goal/why from request.
-2. Mark solution words (`dashboard`, `API`, `button`) as assumptions.
-3. Ask: if tech vanished, what must be true for user?
+1. extract who/goal/why from ask
+2. mark solution words (`dashboard`, `API`, `button`) as assumptions
+3. ask: if tech gone, what must stay true for user?
 
 ### Reflect
-1. Define concrete persona.
-2. Define core job (human outcome).
-3. Define WOW metric (ODI: "minimize/maximize ...").
-4. Verify implementation-agnostic.
-5. Verify demo-able in 1 minute.
+1. define concrete persona
+2. define core job (human outcome)
+3. define WOW metric (ODI: minimize/maximize)
+4. verify implementation-agnostic
+5. verify demo-able in 1 min
 
 ### Make
-1. Draft 1-3 Hills (WHO/WHAT/WOW).
-2. Offer variants if priorities conflict.
-3. Ask user to choose best-fit Hill.
-4. Log assumptions + version.
+1. draft 1-3 Hills (WHO/WHAT/WOW)
+2. offer variants if priorities conflict
+3. ask user choose best-fit Hill
+4. log assumptions + version
 
 ## 2) JTBD -> Hill
 - Job performer -> WHO
 - Functional job -> WHAT
 - Underserved outcome -> WOW
-- Validate WOW measurable + observable
+- WOW must be measurable + observable
 
-## 3) Assumption Audit
-
+## 3) Assumption audit
 Lenses:
-- Desirability: users want/adopt?
-- Viability: business/compliance supports?
-- Feasibility: tech/data/integration possible?
+- desirability: users want/adopt?
+- viability: business/compliance supports?
+- feasibility: tech/data/integration possible?
 
 Grid:
-- High importance + low evidence -> test first
-- High importance + high evidence -> monitor
-- Low importance + low evidence -> defer
-- Low importance + high evidence -> proceed
+- high importance + low evidence -> test first
+- high importance + high evidence -> monitor
+- low importance + low evidence -> defer
+- low importance + high evidence -> proceed
 
-Convert "test first" into research tasks (interviews, data audit, prototype, compliance check).
+Turn "test first" into research tasks (interview, data audit, prototype, compliance check).
 
-## 4) Hopes & Fears
-- Capture success hopes and failure fears.
-- Cluster by theme: transparency, control, speed, trust, fairness.
-- Hope vs fear conflict = design constraint, not contradiction to erase.
+## 4) Hopes & fears
+- capture success hopes + failure fears
+- cluster by theme: transparency/control/speed/trust/fairness
+- hope-fear conflict = design constraint
 
-## 5) Scenario Mapping
-- Map As-Is step-by-step (doing/thinking/feeling/time/tools/handoffs).
-- Find bottleneck (time, errors, frustration, handoff pain).
-- Design To-Be that removes bottleneck, not polish pain.
+## 5) Scenario mapping
+- map As-Is step-by-step (doing/thinking/feeling/time/tools/handoffs)
+- find bottleneck (time/errors/friction/handoff pain)
+- design To-Be removing bottleneck, not polish-only
 
-## 6) Playback Types
-- Playback Zero: kickoff; "right problem?"
-- Playback One: post-prototype; "addresses Hill?"
-- Playback Two: pre-build/go-live; "ready?"
+## 6) Playback types
+- Playback Zero: kickoff -> right problem?
+- Playback One: post prototype -> addresses Hill?
+- Playback Two: pre-build/go-live -> ready?
 
 Rules:
-- Start with latest Hill.
-- Show what made.
-- End with iteration hook.
-- Capture new learning; version Hill if needed.
+- start latest Hill
+- show what made
+- end iteration hook
+- capture learning, version Hill if needed
 
-## 7) AI Facilitation Anti-Patterns
-- Premature convergence -> force 3+ alternatives.
-- Skipping empathy -> demand evidence from real observation.
-- Over-polished artifacts -> keep low-fidelity text artifacts.
-- Resolving tensions -> keep as constraints.
-- Rushing groan zone -> hold ambiguity before deciding.
-- AI deciding priorities -> present options; team decides.
-- Generic output without context -> ground in project artifacts.
+## 7) AI anti-patterns
+- premature converge -> force 3+ alternatives
+- skip empathy -> require real observation evidence
+- over-polish artifacts -> keep low fidelity
+- erase tensions -> keep as constraints
+- rush groan zone -> hold ambiguity longer
+- AI decides priority -> present options, team decides
+- generic output -> ground in project artifacts
 
-## 8) RMS Domain Snapshot
-
-Key personas: Resource Manager, Delivery Lead, PM, Finance Ops, CxO, Individual Resource.
+## 8) RMS domain snapshot
+Personas: Resource Manager, Delivery Lead, PM, Finance Ops, CxO, Individual Resource.
 
 Common pains:
 - availability visibility
@@ -88,30 +85,28 @@ Core tensions:
 - data completeness vs simple UX
 - central control vs team autonomy
 
-## 9) Outcome Metrics
-- Usability: task time, success, error
-- Usefulness: adoption, key-flow frequency, workaround drop
-- Trust/desirability: confidence/NPS/satisfaction
-- Effort: steps/handoffs/time saved
-- Business: utilization, billing accuracy, margin, time-to-fill
+## 9) Outcome metrics
+- usability: task time/success/error
+- usefulness: adoption/key-flow frequency/workaround drop
+- trust: confidence/NPS/satisfaction
+- effort: steps/handoffs/time saved
+- business: utilization/billing accuracy/margin/time-to-fill
 
-Pair leading (weeks) + lagging (months) metrics per Hill.
+Pair leading (weeks) + lagging (months) per Hill.
 
-## 10) Common Mistakes
-- Feature as Hill
-- Skip As-Is
-- Measure output count, not user/business outcome
-- "All users" persona
-- No iteration hook
-- Ignore fears
-- Late sponsor user involvement
-- No assumption audit
+## 10) Common mistakes
+- feature as Hill
+- skip As-Is
+- measure output count, not outcome
+- "all users" persona
+- no iteration hook
+- ignore fears
+- late sponsor user involvement
+- no assumption audit
 
-## 11) Facilitation Prompts
-- Feature request -> "What outcome for which persona?"
-- Scope creep -> "Which Hill does this serve?"
-- Priority conflict -> "Rate user importance x feasibility."
-- Review -> "What one thing still fails user?"
-- Metrics -> "How user knows life improved?"
-
-Reference companion to `SKILL.md`.
+## 11) Facilitation prompts
+- feature ask -> "what outcome for which persona?"
+- scope creep -> "which Hill does this serve?"
+- priority conflict -> "rate user importance x feasibility"
+- review -> "what one thing still fails user?"
+- metrics -> "how user knows life improved?"
